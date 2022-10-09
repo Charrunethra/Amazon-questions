@@ -1,0 +1,61 @@
+class Solution {
+    public boolean isRobotBounded(String instructions) {
+        int x=0,y=0,dir[][]={{0,1},{1,0},{0,-1},{-1,0}},i=0;
+        for(int j=0;j<instructions.length();j++){
+           if(instructions.charAt(j)=='R')
+               i=(i+1)%4;
+            else if(instructions.charAt(j)=='L')
+                i=(i+3)%4;
+            else{
+                x+=dir[i][0];
+                y+=dir[i][1];
+            }
+        }
+        return x==0 && y==0 || i>0;
+    }
+}
+//Alternate solution
+class Solution {
+    final int UP=0;
+    final int LEFT=1;
+    final int DOWN=2;
+    final int RIGHT=3;
+    final int ORIGIN_DIRECTION=UP;
+    public boolean isRobotBounded(String instructions) {
+        int curDirection=ORIGIN_DIRECTION;
+        int row=0,col=0;
+      for(char ch:instructions.toCharArray()){
+          if(ch=='G'){
+              if(curDirection==UP){
+                  row--;
+              }
+              else if(curDirection==DOWN){
+                  row++;
+              }
+              else if(curDirection==LEFT){
+                  col--;
+              }
+              else if(curDirection==RIGHT){
+                  col++;
+              }
+          }
+          else if(ch=='L'){
+              curDirection++;
+              if(curDirection>RIGHT)
+                  curDirection=UP;
+          }
+          else if(ch=='R'){
+              curDirection--;
+              if(curDirection<UP)
+                  curDirection=RIGHT;
+          }
+      }
+        boolean posChanged=row!=0 || col!=0;
+        if(!posChanged) return true;
+        if(curDirection!=ORIGIN_DIRECTION){
+            return true;
+        }
+        return false;
+        
+    }
+}
